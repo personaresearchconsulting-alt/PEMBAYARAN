@@ -1,534 +1,594 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>DASHBOARD SIMULASI PORTAL UTAMA ASESMEN</title>
-
-<link rel="dns-prefetch" href="//fonts.googleapis.com">
-<link rel="dns-prefetch" href="//fonts.gstatic.com">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-/* CSS RESET & BASE */
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-body{
-background:#fcfbf7; /* Soft Cream untuk Dashboard */
-min-height:100vh;
-overflow-x:hidden;
-color:#1a1a1a;
-}
-
-.hidden{
-display:none !important;
-}
-
-/* LOADING SCREEN */
-#loadingScreen{
-position:fixed;
-inset:0;
-background:#ffffff;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:99999;
-}
-
-.loader{
-width:60px;
-height:60px;
-border-radius:50%;
-border:5px solid rgba(26,26,26,.1);
-border-top:5px solid #131340;
-animation:spin .8s linear infinite;
-margin-bottom:18px;
-}
-
-@keyframes spin{
-100%{ transform:rotate(360deg); }
-}
-
-/* LOGIN LAYOUT - GRADASI MIDNIGHT BLUE MEWAH */
-.center-page{
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:20px;
-background: linear-gradient(135deg, #0B0B26 0%, #131340 50%, #1C1C59 100%);
-position: relative;
-}
-
-/* KARTU LOGIN PUTIH BERSIH KONTRAST */
-.login-card{
-width:100%;
-max-width:460px;
-padding:50px 40px;
-border-radius:32px;
-text-align:center;
-background: rgba(255, 255, 255, 0.98);
-border: 1px solid rgba(255, 255, 255, 0.2);
-box-shadow: 0 25px 60px -15px rgba(11, 11, 38, 0.6);
-animation:fadeUp .6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes fadeUp{
-from{ opacity:0; transform:translateY(40px); }
-to{ opacity:1; transform:translateY(0); }
-}
-
-.login-card h1{
-font-size:24px;
-margin-bottom:8px;
-color:#0B0B26; /* Deep Midnight Blue */
-font-weight:700;
-line-height:1.3;
-letter-spacing: -0.5px;
-}
-
-.subtitle{
-color:#131340;
-opacity:.7;
-margin-bottom:35px;
-letter-spacing:2px;
-font-weight:600;
-font-size:12px;
-}
-
-/* INPUT FORM */
-input{
-width:100%;
-padding:16px 20px;
-border:2px solid #e2e8f0;
-outline:none;
-border-radius:16px;
-margin-bottom:20px;
-font-size:15px;
-background:#f8fafc;
-color:#0B0B26;
-text-align:center;
-transition: all .3s ease;
-font-weight: 500;
-}
-
-input:focus{
-border-color:#131340;
-background:#ffffff;
-box-shadow: 0 0 0 4px rgba(19, 19, 64, 0.15);
-}
-
-/* TOMBOL LOGIN MIDNIGHT BLUE ELEGAN */
-.login-btn{
-width:100%;
-padding:16px;
-background:#131340;
-color:#ffffff;
-border-radius:16px;
-font-size:16px;
-font-weight:600;
-border:none;
-cursor:pointer;
-transition: all .3s ease;
-letter-spacing:0.5px;
-box-shadow: 0 4px 12px rgba(19, 19, 64, 0.2);
-}
-
-.login-btn:hover{
-transform:translateY(-2px);
-background:#0B0B26;
-box-shadow:0 8px 20px rgba(11, 11, 38, 0.4);
-}
-
-/* PREMIUM DASHBOARD LAYOUT */
-#dashboard{
-max-width: 1200px;
-margin: 0 auto;
-padding: 40px 24px;
-}
-
-.main-header{
-background: #ffffff;
-padding: 30px;
-border-radius: 24px;
-border: 1px solid #e5e5e0;
-box-shadow: 0 4px 20px rgba(0,0,0,0.02);
-margin-bottom: 30px;
-}
-
-.header-top{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:20px;
-flex-wrap:wrap;
-}
-
-.header-top h2 {
-font-size: 24px;
-font-weight: 700;
-color: #1a1a1a;
-}
-
-.header-right{
-display:flex;
-align-items:center;
-gap:15px;
-flex-wrap:wrap;
-}
-
-.logout-btn{
-padding:12px 22px;
-background:#1a1a1a;
-color:white;
-border-radius:14px;
-font-weight:500;
-font-size: 14px;
-border:none;
-cursor:pointer;
-transition:.3s;
-}
-
-.logout-btn:hover{
-background:#f44336;
-box-shadow: 0 4px 12px rgba(244,67,54,0.2);
-}
-
-/* RUNNING TEXT NOTICE BAR */
-.notice-bar {
-background: #131340; /* Midnight Blue Elegan */
-color: #ffffff;
-padding: 8px 20px;
-border-radius: 12px;
-margin-top: 20px;
-font-size: 12px;
-font-weight: 500;
-overflow: hidden;
-white-space: nowrap;
-border: 1px solid #0B0B26;
-}
-
-.notice-bar marquee {
-vertical-align: middle;
-}
-
-/* CATEGORY SEPARATORS */
-.cat-wrapper {
-margin-bottom: 40px;
-}
-
-.cat-title {
-font-size: 14px;
-text-transform: uppercase;
-letter-spacing: 2px;
-color: #555555;
-font-weight: 700;
-margin-bottom: 20px;
-padding-left: 5px;
-display: flex;
-align-items: center;
-gap: 12px;
-}
-
-.cat-title::after {
-content: '';
-flex: 1;
-height: 1px;
-background: #e5e5e0;
-}
-
-/* CARDS GRID SYSTEM */
-.menu-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-gap:20px;
-}
-
-/* KOTAK MENU: MIDNIGHT BLUE PRESTIGE */
-.menu-card{
-padding:30px 24px;
-border-radius:22px;
-text-align:left;
-cursor:pointer;
-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-background: #131340; /* Midnight Blue */
-border: 1px solid #0B0B26;
-color:#ffffff;
-box-shadow:0 4px 15px rgba(19,19,64,0.15);
-display:flex;
-flex-direction:column;
-justify-content:center;
-position: relative;
-overflow: hidden;
-}
-
-.menu-card::after {
-content: '➔';
-position: absolute;
-right: 25px;
-bottom: 25px;
-font-size: 18px;
-color: rgba(255, 255, 255, 0.25);
-transition: 0.3s;
-}
-
-.menu-card:hover::after {
-color: #ffffff;
-transform: translateX(5px);
-}
-
-.menu-card span {
-font-size: 16px;
-font-weight: 600;
-line-height: 1.4;
-padding-right: 20px;
-}
-
-.menu-card small{
-font-size:11.5px;
-color:#cbd5e1;
-letter-spacing:.2px;
-font-weight:400;
-margin-top:10px;
-line-height: 1.5;
-display: block;
-}
-
-/* HOVER EFFECT (Midnight Blue Lebih Gelap) */
-.menu-card:hover{
-transform:translateY(-5px);
-background: #0B0B26 !important; 
-box-shadow: 0 12px 28px rgba(11,11,38,0.35) !important;
-border-color: #050514;
-}
-
-/* POPUP NOTIFICATION */
-.popup{
-position:fixed;
-top:30px;
-right:30px;
-background:#1a1a1a;
-color:white;
-padding:18px 24px;
-border-left:5px solid #cbd5e1;
-border-radius:14px;
-z-index:9999;
-}
-
-footer{
-text-align:center;
-padding:60px 30px 30px 30px;
-color:#888888;
-font-size:13px;
-letter-spacing: 1px;
-font-weight: 500;
-border-top: 1px solid #e5e5e0;
-margin-top: 40px;
-}
-
-/* RESPONSIVE BREAKPOINTS */
-@media(max-width:768px){
-.login-card{ padding:40px 24px; border-radius: 26px; }
-.login-card h1{ font-size:22px; }
-#dashboard{ padding:20px 16px; }
-.main-header { padding: 20px; border-radius: 18px; }
-.menu-grid { grid-template-columns: 1fr; }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout & Pemesanan Akses Latihan — Persona Research & Consulting</title>
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Midtrans Snap Script (Ganti data-client-key dengan Client Key Midtrans Anda yang sebenarnya) -->
+    <!-- Gunakan https://app.sandbox.midtrans.com/snap/snap.js untuk mode Sandbox / Testing -->
+    <script type="text/javascript"
+      src="https://app.sandbox.midtrans.com/snap/snap.js"
+      data-client-key="YOUR_MIDTRANS_CLIENT_KEY"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        prcBg: '#FAF9F6',
+                        prcAlt: '#F4EEE6',
+                        prcNavy: '#172033',
+                        prcCharcoal: '#2D3748',
+                        prcBorder: '#E2D9CE'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FAF9F6;
+            color: #2D3748;
+            font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .card-hover {
+            transition: all 0.2s ease-in-out;
+        }
+        .card-hover:hover {
+            box-shadow: 0 8px 20px -4px rgba(23, 32, 51, 0.06);
+        }
+    </style>
 </head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-[#172033] selection:text-white">
 
-<body>
+    <!-- HEADER RINGKAS CHECKOUT -->
+    <header class="sticky top-0 z-50 bg-[#FAF9F6]/95 backdrop-blur-md border-b border-[#E2D9CE]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-[#172033] flex items-center justify-center text-white font-bold font-heading text-sm shadow-sm">
+                    P
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-heading font-bold text-[#172033] text-sm tracking-tight leading-tight">PERSONA RESEARCH & CONSULTING</span>
+                    <span class="text-[9px] font-medium text-[#2D3748]/60 tracking-wider uppercase">Checkout & Pemesanan Akses</span>
+                </div>
+            </a>
+            <div class="flex items-center gap-3">
+                <button onclick="scrollToCart()" class="relative bg-[#172033] text-white text-xs font-medium px-4 py-2 rounded hover:bg-[#202c44] transition-colors flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                    <span>Keranjang</span>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-amber-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
 
-<div id="loadingScreen" style="display: none;">
-<div class="loader"></div>
-<h3 style="color:#1a1a1a;font-weight:600;">Menghubungkan ke Sistem...</h3>
-</div>
+    <!-- MAIN CHECKOUT AREA -->
+    <main class="flex-grow py-8 bg-[#FAF9F6]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Page Title -->
+            <div class="mb-8 border-b border-[#E2D9CE] pb-5">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-[#172033] tracking-tight mb-2">Pilih Modul & Durasi Akses Latihan</h1>
+                <p class="text-xs sm:text-sm text-[#2D3748]/70">Pilih durasi akses (14 hari atau 1 bulan) pada modul latihan yang Anda inginkan, lalu lanjutkan ke pembayaran instan Midtrans.</p>
+            </div>
 
-<section id="loginPage" class="center-page">
-<div class="login-card">
-<h1>PORTAL PORTAL UTAMA<br>SIMULASI ASESMEN</h1>
-<p class="subtitle">PERSONA RESEARCH & CONSULTING</p>
-<input type="password" id="passwordInput" placeholder="Masukkan Kata Sandi Akses Portal">
-<button class="login-btn" id="loginBtn">MASUK KE DASHBOARD</button>
-</div>
-</section>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- KOLOM KIRI: KATALOG PRODUK (2 Kolom) -->
+                <div class="lg:col-span-2 space-y-6">
+                    
+                    <!-- Filter Kategori -->
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="filterProducts('all')" class="filter-btn active-filter px-3 py-1.5 text-xs font-semibold rounded bg-[#172033] text-white transition-all">SEMUA</button>
+                        <button onclick="filterProducts('polri')" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded bg-white text-[#172033] border border-[#E2D9CE] hover:bg-[#F4EEE6] transition-all">POLRI</button>
+                        <button onclick="filterProducts('tni')" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded bg-white text-[#172033] border border-[#E2D9CE] hover:bg-[#F4EEE6] transition-all">TNI</button>
+                        <button onclick="filterProducts('kedinasan')" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded bg-white text-[#172033] border border-[#E2D9CE] hover:bg-[#F4EEE6] transition-all">KEDINASAN</button>
+                        <button onclick="filterProducts('lainnya')" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded bg-white text-[#172033] border border-[#E2D9CE] hover:bg-[#F4EEE6] transition-all">LAINNYA</button>
+                    </div>
 
-<section id="dashboard" class="hidden">
-<div class="main-header">
-<div class="header-top">
-<div>
-<h2>Persona Research & Consulting</h2>
-<p id="welcomeText" style="color:#666666; margin-top:4px; font-size: 14px;"></p>
-</div>
-<div class="header-right">
-<button class="logout-btn" id="logoutBtn">Keluar</button>
-</div>
-</div>
-<div class="notice-bar">
-<marquee scrollamount="4">📢 PENGUMUMAN: Kerjakan simulasi latihan instrumen tes ini dengan fokus dan teliti demi hasil grafik analisis performa yang maksimal.</marquee>
-</div>
-</div>
+                    <!-- Grid Produk -->
+                    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        
+                        <!-- POLRI 1 -->
+                        <div class="product-card bg-white border border-[#E2D9CE] rounded-lg p-4 card-hover flex flex-col justify-between" data-category="polri">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="px-2 py-0.5 bg-[#F4EEE6] text-[#172033] text-[10px] font-semibold rounded border border-[#E2D9CE]">POLRI</span>
+                                    <span class="text-[11px] text-[#2D3748]/60">CAT Online</span>
+                                </div>
+                                <h3 class="font-heading font-bold text-sm text-[#172033] mb-1">Tes Kecerdasan Polri</h3>
+                                <p class="text-[11px] text-[#2D3748]/70 mb-3 leading-relaxed">Simulasi psikotes kecerdasan untuk persiapan seleksi Polri.</p>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-[#172033] mb-1.5">Pilih Durasi Akses:</label>
+                                <div class="space-y-1.5 mb-3">
+                                    <label class="flex items-center justify-between p-2 bg-[#FAF9F6] border border-[#E2D9CE] rounded cursor-pointer hover:border-[#172033] transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <input type="radio" name="dur_polri_1" value="14_30000" class="text-[#172033] focus:ring-0">
+                                            <span class="text-xs font-medium text-[#172033]">14 Hari</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#172033]">Rp30.000</span>
+                                    </label>
+                                    <label class="flex items-center justify-between p-2 bg-[#FAF9F6] border border-[#E2D9CE] rounded cursor-pointer hover:border-[#172033] transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <input type="radio" name="dur_polri_1" value="30_50000" checked class="text-[#172033] focus:ring-0">
+                                            <span class="text-xs font-medium text-[#172033]">1 Bulan</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#172033]">Rp50.000</span>
+                                    </label>
+                                </div>
+                                <button onclick="addSelectedToCart('Tes Kecerdasan Polri', 'dur_polri_1')" class="w-full bg-[#172033] text-white text-xs font-semibold py-2 rounded hover:bg-[#202c44] transition-colors">
+                                    + Tambah ke Keranjang
+                                </button>
+                            </div>
+                        </div>
 
-<div class="cat-wrapper">
-<div class="cat-title">Daftar Simulasi Latihan Instrumen</div>
-<div class="menu-grid">
-<!-- MENU MODUL -->
-<div class="menu-card" data-link="army_alpha_cat.html">
-<span>🧠 TES ARMY ALPHA CAT </span>
-<small>Untuk mengukur daya tangkap instruksi verbal, kecepatan pemrosesan informasi, ketelitian, serta konsentrasi kognitif secara langsung dan otomatis.</small>
-</div>
+                        <!-- POLRI 2 -->
+                        <div class="product-card bg-white border border-[#E2D9CE] rounded-lg p-4 card-hover flex flex-col justify-between" data-category="polri">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="px-2 py-0.5 bg-[#F4EEE6] text-[#172033] text-[10px] font-semibold rounded border border-[#E2D9CE]">POLRI</span>
+                                    <span class="text-[11px] text-[#2D3748]/60">CAT Online</span>
+                                </div>
+                                <h3 class="font-heading font-bold text-sm text-[#172033] mb-1">Tes Kepribadian & TKP</h3>
+                                <p class="text-[11px] text-[#2D3748]/70 mb-3 leading-relaxed">Asesmen kepribadian dan karakteristik pribadi seleksi Polri.</p>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-[#172033] mb-1.5">Pilih Durasi Akses:</label>
+                                <div class="space-y-1.5 mb-3">
+                                    <label class="flex items-center justify-between p-2 bg-[#FAF9F6] border border-[#E2D9CE] rounded cursor-pointer hover:border-[#172033] transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <input type="radio" name="dur_polri_2" value="14_30000" class="text-[#172033] focus:ring-0">
+                                            <span class="text-xs font-medium text-[#172033]">14 Hari</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#172033]">Rp30.000</span>
+                                    </label>
+                                    <label class="flex items-center justify-between p-2 bg-[#FAF9F6] border border-[#E2D9CE] rounded cursor-pointer hover:border-[#172033] transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <input type="radio" name="dur_polri_2" value="30_50000" checked class="text-[#172033] focus:ring-0">
+                                            <span class="text-xs font-medium text-[#172033]">1 Bulan</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#172033]">Rp50.000</span>
+                                    </label>
+                                </div>
+                                <button onclick="addSelectedToCart('Tes Kepribadian & TKP', 'dur_polri_2')" class="w-full bg-[#172033] text-white text-xs font-semibold py-2 rounded hover:bg-[#202c44] transition-colors">
+                                    + Tambah ke Keranjang
+                                </button>
+                            </div>
+                        </div>
 
-<!-- MENU MODUL 1 -->
-<div class="menu-card" data-link="kecerdasan_tni.html">
-<span>🧠 TES KECERDASAN TNI </span>
-<small>Mengukur kemampuan penalaran logis, analitis, serta pemecahan masalah kognitif terstruktur siswa di bawah batas waktu tertentu.</small>
-</div>
+                        <!-- POLRI 3 -->
+                        <div class="product-card bg-white border border-[#E2D9CE] rounded-lg p-4 card-hover flex flex-col justify-between" data-category="polri">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="px-2 py-0.5 bg-[#F4EEE6] text-[#172033] text-[10px] font-semibold rounded border border-[#E2D9CE]">POLRI</span>
+                                    <span class="text-[11px] text-[#2D3748]/60">CAT Online</span>
+                                </div>
+                                <h3 class="font-heading font-bold text-sm text-[#172033] mb-1">Tes Kecermatan Polri</h3>
+                                <p class="text-[11px] text-[#2D3748]/70 mb-3 leading-relaxed">Latihan kecepatan, ketelitian, dan konsentrasi format angka/huruf.</p>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-[#172033] mb-1.5">Pilih Durasi Akses:</label>
+                                <div class="space-y-1.5 mb-3">
+                                    <label class="flex items-center justify-between p-2 bg-[#FAF9F6] border border-[#E2D9CE] rounded cursor-pointer hover:border-[#172033] transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <input type="radio" name="dur_polri_3" value="14_30000" class="text-[#172033] focus:ring-0">
+                                            <span class="text-xs font-medium text-[#172033]">14 Hari</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#172033]">Rp30.000</span>
+                                    </label>
+                                    <label class="flex items-center justify-between p-2 bg-[#FAF9F6] border border-[#E2D9CE] rounded cursor-pointer hover:border-[#172033] transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <input type="radio" name="dur_polri_3" value="30_50000" checked class="text-[#172033] focus:ring-0">
+                                            <span class="text-xs font-medium text-[#172033]">1 Bulan</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#172033]">Rp50.000</span>
+                                    </label>
+                                </div>
+                                <button onclick="addSelectedToCart('Tes Kecermatan Polri', 'dur_polri_3')" class="w-full bg-[#172033] text-white text-xs font-semibold py-2 rounded hover:bg-[#202c44] transition-colors">
+                                    + Tambah ke Keranjang
+                                </button>
+                            </div>
+                        </div>
 
-<!-- MENU MODUL 2 -->
-<div class="menu-card" data-link="kecedasan_dasar_1.html">
-<span>🧠 TES KECERDASAN </span>
-<small>Mengukur kemampuan penalaran logis, analitis, serta pemecahan masalah kognitif terstruktur siswa di bawah batas waktu tertentu.</small>
-</div>
+                        <!-- POLRI 4 (Paket) -->
+                        <div class="product-card bg-white border border-[#E2D9CE] rounded-lg p-4 card-hover flex flex-col justify-between" data-category="polri">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="px-2 py-0.5 bg-[#F4EEE6] text-[#172033] text-[10px] font-semibold rounded border border-[#E2D9CE]">POLRI</span>
+                                    <span class="text-[11px] text-[#2D3748]/60">CAT Online</span>
+                                </div>
+                                <h3 class="font-heading font-bold text-sm text-[#172033] mb-1">Paket Lengkap Polri</h3>
+                                <p class="text-[11px] text-[#2D3748]/70 mb-3 leading-relaxed">Kumpulan lengkap seluruh modul latihan dan tryout seleksi Polri.</p>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-[#172033] mb-1.5">Pilih Durasi Akses:</label>
+                                <div class="space-y-1.5 mb-3">
+                                    <label class="flex items-center justify-between p-2 bg-[#FAF9F6] border border-[#E2D9CE] rounded cursor-pointer hover:border-[#172033] transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <input type="radio" name="dur_polri_4" value="14_75000" class="text-[#172033] focus:ring-0">
+                                            <span class="text-xs font-medium text-[#172033]">14 Hari</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#172033]">Rp75.000</span>
+                                    </label>
+                                    <label class="flex items-center justify-between p-2 bg-[#FAF9F6] border border-[#E2D9CE] rounded cursor-pointer hover:border-[#172033] transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <input type="radio" name="dur_polri_4" value="30_125000" checked class="text-[#172033] focus:ring-0">
+                                            <span class="text-xs font-medium text-[#172033]">1 Bulan</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#172033]">Rp125.000</span>
+                                    </label>
+                                </div>
+                                <button onclick="addSelectedToCart('Paket Lengkap Polri', 'dur_polri_4')" class="w-full bg-[#172033] text-white text-xs font-semibold py-2 rounded hover:bg-[#202c44] transition-colors">
+                                    + Tambah ke Keranjang
+                                </button>
+                            </div>
+                        </div>
 
+                        <!-- TNI 1 -->
+                        <div class="product-card bg-white border border-[#E2D9CE] rounded-lg p-4 card-hover flex flex-col justify-between" data-category="tni">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="px-2 py-0.5 bg-[#F4EEE6] text-[#172033] text-[10px] font-semibold rounded border border-[#E2D9CE]">TNI</span>
+                                    <span class="text-[11px] text-[#2D3748]/60">CAT Online</span>
+                                </div>
+                                <h3 class="font-heading font-bold text-sm text-[#172033] mb-1">Tes Kecerdasan / Army Alpha</h3>
+                                <p class="text-[11px] text-[#2D3748]/70 mb-3 leading-relaxed">Simulasi psikotes militer mencakup logika verbal dan Army Alpha.</p>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-[#172033] mb-1.5">Pilih Durasi Akses:</label>
+                                <div class="space-y-1.5 mb-3">
+                                    <label class="flex items-center justify-between p-2 bg-[#FAF9F6] border border-[#E2D9CE] rounded cursor-pointer hover:border-[#172033] transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <input type="radio" name="dur_tni_1" value="14_30000" class="text-[#172033] focus:ring-0">
+                                            <span class="text-xs font-medium text-[#172033]">14 Hari</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#172033]">Rp30.000</span>
+                                    </label>
+                                    <label class="flex items-center justify-between p-2 bg-[#FAF9F6] border border-[#E2D9CE] rounded cursor-pointer hover:border-[#172033] transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <input type="radio" name="dur_tni_1" value="30_50000" checked class="text-[#172033] focus:ring-0">
+                                            <span class="text-xs font-medium text-[#172033]">1 Bulan</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#172033]">Rp50.000</span>
+                                    </label>
+                                </div>
+                                <button onclick="addSelectedToCart('Tes Kecerdasan / Army Alpha', 'dur_tni_1')" class="w-full bg-[#172033] text-white text-xs font-semibold py-2 rounded hover:bg-[#202c44] transition-colors">
+                                    + Tambah ke Keranjang
+                                </button>
+                            </div>
+                        </div>
 
-<!-- MENU MODUL 3 -->
-<div class="menu-card" data-link="kepribadian_1.html">
-<span>📊 SIMULASI INVENTORI KEPRIBADIAN PERSONEL</span>
-<small>Simulasi instrumen penilaian aspek psikologis dan stabilitas karakter personal yang terdiri atas 100 indikator soal utama.</small>
-</div>
+                        <!-- TNI 2 -->
+                        <div class="product-card bg-white border border-[#E2D9CE] rounded-lg p-4 card-hover flex flex-col justify-between" data-category="tni">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="px-2 py-0.5 bg-[#F4EEE6] text-[#172033] text-[10px] font-semibold rounded border border-[#E2D9CE]">TNI</span>
+                                    <span class="text-[11px] text-[#2D3748]/60">CAT Online</span>
+                                </div>
+                                <h3 class="font-heading font-bold text-sm text-[#172033] mb-1">Mental & Kepribadian Militer</h3>
+                                <p class="text-[11px] text-[#2D3748]/70 mb-3 leading-relaxed">Evaluasi stabilitas emosi dan orientasi tugas khusus TNI.</p>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-[#172033] mb-1.5">Pilih Durasi Akses:</label>
+                                <div class="space-y-1.5 mb-3">
+                                    <label class="flex items-center justify-between p-2 bg-[#FAF9F6] border border-[#E2D9CE] rounded cursor-pointer hover:border-[#172033] transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <input type="radio" name="dur_tni_2" value="14_30000" class="text-[#172033] focus:ring-0">
+                                            <span class="text-xs font-medium text-[#172033]">14 Hari</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#172033]">Rp30.000</span>
+                                    </label>
+                                    <label class="flex items-center justify-between p-2 bg-[#FAF9F6] border border-[#E2D9CE] rounded cursor-pointer hover:border-[#172033] transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <input type="radio" name="dur_tni_2" value="30_50000" checked class="text-[#172033] focus:ring-0">
+                                            <span class="text-xs font-medium text-[#172033]">1 Bulan</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#172033]">Rp50.000</span>
+                                    </label>
+                                </div>
+                                <button onclick="addSelectedToCart('Mental & Kepribadian Militer', 'dur_tni_2')" class="w-full bg-[#172033] text-white text-xs font-semibold py-2 rounded hover:bg-[#202c44] transition-colors">
+                                    + Tambah ke Keranjang
+                                </button>
+                            </div>
+                        </div>
 
-<!-- MENU MODUL 4 -->
-<div class="menu-card" data-link="korancatver5.html">
-<span>🧠 TES KORAN CAT</span>
-<small>Mengukur hasil kerja berdasarkan tekanan waktu.</small>
-</div>
+                        <!-- KEDINASAN 1 -->
+                        <div class="product-card bg-white border border-[#E2D9CE] rounded-lg p-4 card-hover flex flex-col justify-between" data-category="kedinasan">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="px-2 py-0.5 bg-[#F4EEE6] text-[#172033] text-[10px] font-semibold rounded border border-[#E2D9CE]">KEDINASAN</span>
+                                    <span class="text-[11px] text-[#2D3748]/60">CAT Online</span>
+                                </div>
+                                <h3 class="font-heading font-bold text-sm text-[#172033] mb-1">SKD Kedinasan (TIU, TWK, TKP)</h3>
+                                <p class="text-[11px] text-[#2D3748]/70 mb-3 leading-relaxed">Paket lengkap latihan soal seleksi kompetensi dasar kedinasan.</p>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-[#172033] mb-1.5">Pilih Durasi Akses:</label>
+                                <div class="space-y-1.5 mb-3">
+                                    <label class="flex items-center justify-between p-2 bg-[#FAF9F6] border border-[#E2D9CE] rounded cursor-pointer hover:border-[#172033] transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <input type="radio" name="dur_ked_1" value="14_30000" class="text-[#172033] focus:ring-0">
+                                            <span class="text-xs font-medium text-[#172033]">14 Hari</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#172033]">Rp30.000</span>
+                                    </label>
+                                    <label class="flex items-center justify-between p-2 bg-[#FAF9F6] border border-[#E2D9CE] rounded cursor-pointer hover:border-[#172033] transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <input type="radio" name="dur_ked_1" value="30_50000" checked class="text-[#172033] focus:ring-0">
+                                            <span class="text-xs font-medium text-[#172033]">1 Bulan</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#172033]">Rp50.000</span>
+                                    </label>
+                                </div>
+                                <button onclick="addSelectedToCart('SKD Kedinasan (TIU, TWK, TKP)', 'dur_ked_1')" class="w-full bg-[#172033] text-white text-xs font-semibold py-2 rounded hover:bg-[#202c44] transition-colors">
+                                    + Tambah ke Keranjang
+                                </button>
+                            </div>
+                        </div>
 
-<!-- MENU MODUL KREAPLIN -->
-<div class="menu-card" data-link="kreaplin.html">
-<span>🧠 TES KREAPLIN</span>
-<small>Mengukur ketahanan kerja, keajegan, ketelitian, serta stabilitas emosi di bawah tekanan waktu.</small>
-</div>
+                        <!-- LAINNYA 1 -->
+                        <div class="product-card bg-white border border-[#E2D9CE] rounded-lg p-4 card-hover flex flex-col justify-between" data-category="lainnya">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="px-2 py-0.5 bg-[#F4EEE6] text-[#172033] text-[10px] font-semibold rounded border border-[#E2D9CE]">LAINNYA</span>
+                                    <span class="text-[11px] text-[#2D3748]/60">CAT Online</span>
+                                </div>
+                                <h3 class="font-heading font-bold text-sm text-[#172033] mb-1">Paket Multi-Seleksi Premium</h3>
+                                <p class="text-[11px] text-[#2D3748]/70 mb-3 leading-relaxed">Akses penuh lintas kategori (Polri, TNI, Kedinasan) untuk persiapan maksimal.</p>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-[#172033] mb-1.5">Pilih Durasi Akses:</label>
+                                <div class="space-y-1.5 mb-3">
+                                    <label class="flex items-center justify-between p-2 bg-[#FAF9F6] border border-[#E2D9CE] rounded cursor-pointer hover:border-[#172033] transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <input type="radio" name="dur_lain_1" value="30_125000" class="text-[#172033] focus:ring-0">
+                                            <span class="text-xs font-medium text-[#172033]">1 Bulan</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#172033]">Rp125.000</span>
+                                    </label>
+                                    <label class="flex items-center justify-between p-2 bg-[#FAF9F6] border border-[#E2D9CE] rounded cursor-pointer hover:border-[#172033] transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <input type="radio" name="dur_lain_1" value="90_200000" checked class="text-[#172033] focus:ring-0">
+                                            <span class="text-xs font-medium text-[#172033]">3 Bulan / Penuh</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#172033]">Rp200.000</span>
+                                    </label>
+                                </div>
+                                <button onclick="addSelectedToCart('Paket Multi-Seleksi Premium', 'dur_lain_1')" class="w-full bg-[#172033] text-white text-xs font-semibold py-2 rounded hover:bg-[#202c44] transition-colors">
+                                    + Tambah ke Keranjang
+                                </button>
+                            </div>
+                        </div>
 
-<!-- MENU MODUL 5 -->
-<div class="menu-card" data-link="kubus3d.html">
-<span>🧠 TES FIGURAL KUBUS</span>
-<small>Mengukur logika berfikir dalam bentuk gambar.</small>
-</div>
+                    </div>
+                </div>
 
-<!-- MENU MODUL 6 -->
-<div class="menu-card" data-link="balok.html">
-<span>🧠 TES FIGURAL BALOK</span>
-<small>Mengukur logika berfikir dalam bentuk gambar.</small>
-</div>
+                <!-- KOLOM KANAN: KERANJANG & CHECKOUT FORM -->
+                <div class="lg:col-span-1">
+                    <div id="cart-section" class="bg-white border border-[#E2D9CE] rounded-lg p-5 sticky top-20 shadow-sm">
+                        <h2 class="font-heading font-bold text-base text-[#172033] mb-4 pb-3 border-b border-[#E2D9CE] flex items-center justify-between">
+                            <span>Keranjang Belanja</span>
+                            <span id="item-count-badge" class="bg-[#172033] text-white text-xs px-2 py-0.5 rounded-full">0 item</span>
+                        </h2>
 
-<!-- MENU MODUL 7 -->
-<div class="menu-card" data-link="kecerdasan_verbal11.html">
-<span>🧠 TES VERBAL</span>
-<small>Mengukur logika berfikir dalam bentuk kata.</small>
-</div>
+                        <!-- Daftar Item -->
+                        <div id="cart-items-container" class="space-y-3 mb-4 max-h-60 overflow-y-auto">
+                            <p class="text-xs text-[#2D3748]/60 text-center py-6">Belum ada produk yang dipilih.</p>
+                        </div>
 
+                        <!-- Data Pembeli -->
+                        <div class="space-y-3 pt-3 border-t border-[#E2D9CE] mb-4">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-[#172033] mb-1">Nama Lengkap</label>
+                                <input type="text" id="buyer-name" placeholder="Sesuai akun Anda" class="w-full px-3 py-1.5 text-xs bg-[#FAF9F6] border border-[#E2D9CE] rounded focus:outline-none focus:border-[#172033]">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-[#172033] mb-1">Email</label>
+                                <input type="email" id="buyer-email" placeholder="email@domain.com" class="w-full px-3 py-1.5 text-xs bg-[#FAF9F6] border border-[#E2D9CE] rounded focus:outline-none focus:border-[#172033]">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-[#172033] mb-1">No. WhatsApp</label>
+                                <input type="text" id="buyer-phone" placeholder="08xxxxxxxxxx" class="w-full px-3 py-1.5 text-xs bg-[#FAF9F6] border border-[#E2D9CE] rounded focus:outline-none focus:border-[#172033]">
+                            </div>
+                        </div>
 
-</div>
-</div>
-</section>
+                        <!-- Total & Checkout Button -->
+                        <div class="pt-3 border-t border-[#E2D9CE] mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-medium text-[#2D3748]">Total Pembayaran:</span>
+                                <span id="cart-total" class="font-bold text-sm text-[#172033]">Rp0</span>
+                            </div>
+                        </div>
 
-<div id="popup" class="popup hidden"></div>
+                        <button onclick="processCheckout()" id="checkout-btn" class="w-full bg-[#172033] text-white text-xs font-semibold py-2.5 rounded hover:bg-[#202c44] transition-colors disabled:opacity-50" disabled>
+                            BAYAR DENGAN MIDTRANS
+                        </button>
+                        <p class="text-[10px] text-[#2D3748]/60 text-center mt-2">Akses latihan langsung aktif otomatis setelah pembayaran Midtrans sukses.</p>
+                    </div>
+                </div>
 
-<footer>
-&copy; PERSONA RESEARCH & CONSULTING 087742515786 &bull; ALL RIGHTS RESERVED
-</footer>
+            </div>
+        </div>
+    </main>
 
-<script>
-if(!localStorage.getItem("layoutCleaned_v2")){
-    localStorage.clear();
-    localStorage.setItem("layoutCleaned_v2", "true");
-}
+    <!-- FOOTER RINGKAS -->
+    <footer class="bg-[#172033] text-[#FAF9F6] py-6 border-t border-[#E2D9CE]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#FAF9F6]/70">
+            <p>&copy; 2026 Persona Research & Consulting. Secure Checkout System.</p>
+            <p class="mt-1 sm:mt-0">support@prc.web.id</p>
+        </div>
+    </footer>
 
-// PENULISAN MANUAL PASSWORD ARMY001 SAMPAI ARMY050
-const passwordList = [
-    'ARMY001', 'EGA12', 'CANDRA17', 'ARMY004', 'ARMY005', 'ARMY006', 'ARMY007', 'ARMY008', 'ARMY009', 'ARMY010',
-    'ARMY011', 'ARMY012', 'ARMY013', 'ARMY014', 'ARMY015', 'ARMY016', 'ARMY017', 'ARMY018', 'ARMY019', 'ARMY020',
-    'ARMY021', 'ARMY022', 'ARMY023', 'ARMY024', 'ARMY025', 'ARMY026', 'ARMY027', 'ARMY028', 'ARMY029', 'ARMY030',
-    'ARMY031', 'ARMY032', 'ARMY033', 'ARMY034', 'ARMY035', 'ARMY036', 'ARMY037', 'ARMY038', 'ARMY039', 'ARMY040',
-    'ARMY041', 'ARMY042', 'ARMY043', 'ARMY044', 'ARMY045', 'ARMY046', 'ARMY047', 'ARMY048', 'ARMY049', 'ARMY050'
-];
+    <!-- JAVASCRIPT -->
+    <script>
+        let cart = [];
 
-const loginBtn = document.getElementById("loginBtn");
-const passwordInput = document.getElementById("passwordInput");
-const loginPage = document.getElementById("loginPage");
-const dashboard = document.getElementById("dashboard");
-const popup = document.getElementById("popup");
-const welcomeText = document.getElementById("welcomeText");
+        function filterProducts(category) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-[#172033]', 'text-white');
+                btn.classList.add('bg-white', 'text-[#172033]');
+            });
+            event.target.classList.remove('bg-white', 'text-[#172033]');
+            event.target.classList.add('bg-[#172033]', 'text-white');
 
-function showPopup(text){
-popup.innerText=text;
-popup.classList.remove("hidden");
-setTimeout(()=>{ popup.classList.add("hidden"); },2500);
-}
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
 
-loginBtn.addEventListener("click",loginSystem);
+        function addSelectedToCart(productName, radioGroupName) {
+            const selectedRadio = document.querySelector(`input[name="${radioGroupName}"]:checked`);
+            if (!selectedRadio) {
+                alert('Silakan pilih durasi akses terlebih dahulu.');
+                return;
+            }
 
-passwordInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") loginSystem();
-});
+            const valParts = selectedRadio.value.split('_');
+            const daysOrMonths = valParts[0];
+            const price = parseInt(valParts[1]);
+            
+            let durationLabel = daysOrMonths === '14' ? '14 Hari' : (daysOrMonths === '90' ? '3 Bulan / Penuh' : '1 Bulan');
 
-function loginSystem(){
-const input = passwordInput.value.trim();
+            const existingIndex = cart.findIndex(item => item.name === productName && item.duration === durationLabel);
+            if (existingIndex > -1) {
+                alert('Produk dengan durasi ini sudah ada di keranjang.');
+                return;
+            }
 
-// Pengecekan tidak sensitif huruf besar/kecil (bisa army001, Army001, ARMY001, dll)
-const isValid = passwordList.some(pass => pass.toLowerCase() === input.toLowerCase());
+            cart.push({ id: 'PRC-' + Math.floor(Math.random() * 90000 + 10000), name: productName + ' (' + durationLabel + ')', price: price, quantity: 1, duration: durationLabel });
+            updateCartUI();
+        }
 
-if(!isValid){
-showPopup("Password salah.");
-return;
-}
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const badge = document.getElementById('cart-badge');
+            const itemCountBadge = document.getElementById('item-count-badge');
+            const totalEl = document.getElementById('cart-total');
+            const checkoutBtn = document.getElementById('checkout-btn');
 
-const formattedInput = input.toUpperCase();
-localStorage.setItem("loggedInUser", formattedInput);
-showPopup("Login berhasil.");
-openDashboard(formattedInput);
-}
+            if (cart.length === 0) {
+                container.innerHTML = '<p class="text-xs text-[#2D3748]/60 text-center py-6">Belum ada produk yang dipilih.</p>';
+                badge.classList.add('hidden');
+                itemCountBadge.innerText = '0 item';
+                totalEl.innerText = 'Rp0';
+                checkoutBtn.disabled = true;
+                return;
+            }
 
-function openDashboard(user){
-loginPage.classList.add("hidden");
-dashboard.classList.remove("hidden");
-welcomeText.innerHTML=`Peserta Aktif: <b>${user}</b>`;
-}
+            badge.classList.remove('hidden');
+            badge.innerText = cart.length;
+            itemCountBadge.innerText = cart.length + ' item';
 
-const loggedUser = localStorage.getItem("loggedInUser");
-if(loggedUser && passwordList.some(pass => pass.toLowerCase() === loggedUser.toLowerCase())){
-openDashboard(loggedUser.toUpperCase());
-}
+            let html = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                html += `
+                    <div class="flex items-center justify-between bg-[#FAF9F6] p-2.5 rounded border border-[#E2D9CE]">
+                        <div>
+                            <h4 class="font-heading font-semibold text-xs text-[#172033]">${item.name}</h4>
+                            <p class="text-[11px] text-[#2D3748]/70">Rp${item.price.toLocaleString('id-ID')}</p>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-rose-600 hover:text-rose-800 text-xs px-2 py-1 font-bold">&times;</button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            totalEl.innerText = 'Rp' + total.toLocaleString('id-ID');
+            checkoutBtn.disabled = false;
+        }
 
-document.getElementById("logoutBtn").addEventListener("click",()=>{
-localStorage.clear();
-location.reload();
-});
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
 
-document.addEventListener("contextmenu",e=>e.preventDefault());
-document.addEventListener("keydown",e=>{
-if(e.key==="F12"||(e.ctrlKey&&e.shiftKey&&e.key==="I")||(e.ctrlKey&&e.key==="u")){
-e.preventDefault();
-}
-});
+        function scrollToCart() {
+            document.getElementById('cart-section').scrollIntoView({ behavior: 'smooth' });
+        }
 
-document.querySelectorAll(".menu-card").forEach(card=>{
-card.addEventListener("click",()=>{
-const target=card.getAttribute("data-link");
-if(target) window.location.href=target;
-});
-});
-</script>
+        function processCheckout() {
+            const name = document.getElementById('buyer-name').value.trim();
+            const email = document.getElementById('buyer-email').value.trim();
+            const phone = document.getElementById('buyer-phone').value.trim();
+
+            if (!name || !email || !phone) {
+                alert('Mohon lengkapi Nama, Email, dan No. WhatsApp terlebih dahulu.');
+                return;
+            }
+
+            // Hitung total gross amount
+            const grossAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const orderId = 'PRC-ORD-' + new Date().getTime();
+
+            // CATATAN: Untuk produksi penuh, Anda biasanya melakukan fetch ke backend API Anda 
+            // (misal endpoint Edge Function Supabase prc.web.id) untuk meminta Snap Token Midtrans.
+            // Contoh implementasi di bawah menggunakan pemanggilan langsung atau simulasi token untuk frontend-only/testing:
+
+            /* 
+               CONTOH FETCH KE BACKEND SUPABASE/PHP/NODE.JS ANDA:
+               fetch('https://prc.web.id/api/create-midtrans-transaction', {
+                   method: 'POST',
+                   headers: { 'Content-Type': 'application/json' },
+                   body: JSON.stringify({ order_id: orderId, amount: grossAmount, customer: { name, email, phone }, items: cart })
+               })
+               .then(res => res.json())
+               .then(data => {
+                   window.snap.pay(data.snap_token, { ... });
+               });
+            */
+
+            // Simulasi Trigger Midtrans Snap (Pastikan Anda mengganti skrip dengan Client Key asli & backend server token generator)
+            if (typeof window.snap === 'undefined') {
+                alert('Skrip Midtrans Snap belum termuat dengan benar. Periksa koneksi internet atau Client Key Anda.');
+                return;
+            }
+
+            // Contoh jika token sudah didapatkan dari backend:
+            // window.snap.pay('YOUR_SNAP_TOKEN_FROM_BACKEND', {
+            //     onSuccess: function(result){ alert("Pembayaran Berhasil!"); console.log(result); },
+            //     onPending: function(result){ alert("Menunggu Pembayaran!"); console.log(result); },
+            //     onError: function(result){ alert("Pembayaran Gagal!"); console.log(result); }
+            // });
+
+            // Demo Alert interaktif sebelum memicu Snap popup
+            alert(`Menghubungkan ke Midtrans Gateway untuk Order ID: ${orderId}\nTotal: Rp${grossAmount.toLocaleString('id-ID')}`);
+            
+            // Contoh pemanggilan Snap secara langsung (jika menggunakan token uji coba/sandbox dari server Anda):
+            /*
+            window.snap.pay('ISI_SNAP_TOKEN_DARI_BACKEND_ANDA', {
+                onSuccess: function(result) {
+                    window.location.href = '/sukses?order_id=' + orderId;
+                },
+                onPending: function(result) {
+                    alert("Silakan selesaikan pembayaran Anda.");
+                },
+                onError: function(result) {
+                    alert("Pembayaran mengalami kendala.");
+                }
+            });
+            */
+        }
+    </script>
 </body>
 </html>
